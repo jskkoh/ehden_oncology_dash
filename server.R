@@ -1,6 +1,7 @@
 # Cancer survival dashboard app
 
 library(tidyverse)
+library(DT)
 library(readxl)
 
 
@@ -34,7 +35,7 @@ source("./R/text_boxes.R")
 source("./R/intro_page.R")
 
 
-# Rename highchart donwload btn
+# Rename highchart download button
 lang <- getOption("highcharter.lang")
 lang$contextButtonTitle <- "Download"
 options(highcharter.lang = lang)
@@ -42,8 +43,12 @@ options(highcharter.lang = lang)
 
 shinyServer(function(input, output,session) {
   
-  # REACTIVE DATA -----------
+  
+  
+  # Reactive data -----------------------------------------------------------
+  
   reactiveData = reactiveValues()
+  
   
   observe({
     
@@ -83,6 +88,13 @@ shinyServer(function(input, output,session) {
       input$sex
     )
     
+    reactiveData$tableGOF = gofTable(
+      fit_df,
+      input$cancerType,
+      input$age,
+      input$sex 
+    )
+    
   })
   
   cancerName = reactive ({
@@ -96,6 +108,9 @@ shinyServer(function(input, output,session) {
     else {"stomach cancer"}
   }) 
   
+  
+  # Text outputs ------------------------------------------------------------
+  
   output$survPlotTitle = renderText({
     paste0("Observed and fitted survival for ",cancerName())
   })
@@ -104,9 +119,27 @@ shinyServer(function(input, output,session) {
     paste0("Hazard function over time for ",cancerName())
   })
   
+  output$gofTableTitle = renderText({
+    paste0("Survival curve extrapolation goodness-of-fit statistics")
+  })
   
   
-  # HIGH CHARTS ---------
+  
+  # Tables ------------------------------------------------------------------
+  
+  output$fitTable = renderDataTable({
+    
+    withProgress(message = 'Loading data table',{
+      table = reactiveData$tableGOF
+      datatable(table,
+                rownames = FALSE,
+                options = list(paging=FALSE,searching=FALSE,info=FALSE))
+    })
+  })
+  
+  
+  # Highcharter plots -------------------------------------------------------
+  
   output$survivalPlot = renderHighchart({
     highchartSurv()
   })
@@ -125,7 +158,7 @@ shinyServer(function(input, output,session) {
            ),
            color = c("#999999","#E69F00","#56B4E9","#009E73",
                      "#F0E442","#0072B2","#D55E00","#CC79A7")
-           ) %>%
+    ) %>%
       hc_add_series(
         reactiveData$tableSurvPlotKM,"line",
         hcaes(
@@ -215,7 +248,7 @@ shinyServer(function(input, output,session) {
         lineWidth = 4,
         color = "#000000",
         zIndex = 1
-        ) %>%
+      ) %>%
       hc_add_series(
         reactiveData$tableHazObsPlot,"arearange",
         name="95% Confidence Interval",

@@ -53,7 +53,7 @@ ui <- fillPage(
                      class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#infoModal"),
         actionButton("sources", "Data sources", icon = icon("book"), 
                      class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
-       
+        
       ),
       
       # Inputs
@@ -114,70 +114,86 @@ ui <- fillPage(
           actionButton("ehden", "EHDEN network", icon = icon("paper-plane"), 
                        class = "btn-info-2 my-2")
         ),
+      )
+    ),
+    
+    
+    
+    # RESULTS PANEL ------    
+    div(
+      class="d-flex flex-row flex-grow-1 flex-wrap align-items-start align-content-start  justify-content-center p-3",
+      style="flex-basis: 300px; margin-top: 50px",
+      
+      
+      # Survival curve extrapolation card
+      div(
+        class="res-card w-50",
+        div(
+          class = "res shadow border rounded-3 bg-white p-3 w-100",
+          div(
+            class = "fs-4 mb-3 mt-2 ms-2",
+            textOutput("survPlotTitle")
+          ),
+          div(
+            class = "control-label text-left mt-2 mb-2 mt-2 fw-bold",
+            "Select time range"
+          ),
+          div(
+            class = "control-label text-left mb-2 mt-2 fw-bold",
+            sliderInput("survTimeRange",NULL,min=0, 
+                        max=25,value=c(0, 25),step=1)
+          ),
+          highchartOutput("survivalPlot")
+        )
+      ),
+      
+      
+      # Hazard plot card
+      div(
+        class="res-card w-50",
+        div(
+          class = "res shadow border rounded-3 bg-white p-3 w-100",
+          div(
+            class = "fs-4 mb-3 mt-2 ms-2",
+            textOutput("hazPlotTitle")
+          ),
+          div(
+            class = "control-label text-left mt-2 mb-2 mt-2 fw-bold",
+            "Select time range"
+          ),
+          div(
+            class = "control-label text-left mb-2 mt-2 fw-bold",
+            sliderInput("hazTimeRange",NULL,min=0, 
+                        max=25,value=c(0, 25),step=1)
+            ),
+          highchartOutput("hazardPlot")
+        )
+      ),
+      
+      # Goodness of fit table card
+      div(
+        class="res-card w-50",
+        div(
+          class = "res shadow border rounded-3 bg-white p-3",
+          div(
+            class = "fs-4 mb-3 mt-2 ms-2",
+            textOutput("gofTableTitle")
+          ),
+          
+          div(
+            class = "res-line ",
+            div(
+              style="font-size:80%",
+              dataTableOutput("fitTable")
+            )
+          )
+        )
+      )
     )
-  ),
-  
-  
-  
-  # RESULTS PANEL ------    
-  div(
-    class="d-flex flex-row flex-grow-1 flex-wrap align-items-start align-content-start  justify-content-center p-3",
-    style="flex-basis: 300px; margin-top: 50px",
-    
-    
-    # Survival curve extrapolation card
-    div(
-      class="res-card w-50",
-      div(
-        class = "res shadow border rounded-3 bg-white p-3 w-100",
-        div(
-          class = "fs-4 mb-3 mt-2 ms-2",
-          textOutput("survPlotTitle")
-        ),
-        div(
-          class = "control-label text-left mt-2 mb-2 mt-2 fw-bold",
-          "Select time range"
-        ),
-        sliderInput("survTimeRange",NULL,min=0, 
-                    max=25,value=c(0, 25),step=1),
-        highchartOutput("survivalPlot")
-      )
-    ),
-    
-    
-    # Hazard plot card
-    div(
-      class="res-card w-50",
-      div(
-        class = "res shadow border rounded-3 bg-white p-3 w-100",
-        div(
-          class = "fs-4 mb-3 mt-2 ms-2",
-          textOutput("hazPlotTitle")
-        ),
-        div(
-          class = "control-label text-left mt-2 mb-2 mt-2 fw-bold",
-          "Select time range"
-        ),
-        sliderInput("hazTimeRange",NULL,min=0, 
-                    max=25,value=c(0, 25),step=1),
-        highchartOutput("hazardPlot")
-      )
     ),
     
     
     
-   
-    
-    
-    
-
-    
+    modalDivs()
     
   )
-),
-
-
-
-modalDivs()
-
-)

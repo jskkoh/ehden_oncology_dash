@@ -3,7 +3,7 @@
     "path": "U:/GitHub/ehden_survival/ui.R",
     "project_path": "ui.R",
     "type": "r_source",
-    "hash": "1486684362",
+    "hash": "1082762377",
     "contents": "",
     "dirty": false,
     "created": 1665067961880.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled3",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "160,24",
-        "scrollLine": "141"
+        "cursorPosition": "6,0",
+        "scrollLine": "24"
     },
     "folds": "",
-    "lastKnownWriteTime": 1665674191,
+    "lastKnownWriteTime": 1665676655,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1665674191456,
+    "last_content_update": 1665676655129,
     "read_only": false,
     "read_only_alternatives": []
 }

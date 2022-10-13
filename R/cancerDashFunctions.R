@@ -29,3 +29,13 @@ hazPlotTableObs <- function(dataHazObs,cancerType,age,sex) {
     select(time,est,lcl,ucl,Method) 
   return(tableHazObsPlot)
 }
+
+gofTable <- function(dataGOF,cancerType,age,sex) {
+  tableGOF <- dataGOF %>% 
+    filter(Cancer==cancerType & Age==age & Gender==sex) %>%
+    select(-Cancer,-Age,-Gender)
+  colnames(tableGOF) <- c("N","Events","Censored","Time at risk","df",
+                          "logLik","AIC","BIC","Method")
+  tableGOF <- tableGOF[,c(9,1,2,3,4,5,6,7,8)]
+  return(tableGOF)
+}
