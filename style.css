@@ -39,6 +39,18 @@ body {
   display: inline-flex;
 }
 
+.res-card-tab{
+  flex-grow: 1;
+  
+  min-height: 300px;
+  
+  min-width: 600px;
+  max-width: 600px;
+  
+  padding: 10px;
+  display: inline-flex;
+}
+
 .res {
   flex-grow: 1;
   display: flex;
@@ -172,6 +184,17 @@ body {
 }
 
 .cell {
+  flex-basis: 10%;
+  display: flex;
+  flex-grow: 1;
+  min-width: 150px;
+  max-width: 400px;
+  margin: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.cell-menu {
   flex-basis: 10%;
   display: flex;
   flex-grow: 1;

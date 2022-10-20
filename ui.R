@@ -5,6 +5,9 @@ library(shinyWidgets)
 library(highcharter)
 library(waiter)
 
+
+# UI setup ----------------------------------------------------------------
+
 ui <- fillPage(
   
   # Use bootstrap 5
@@ -41,9 +44,12 @@ ui <- fillPage(
       style="min-width: 250px; max-width: 300px; flex-basis: 100px; background-color:#360000",
       
       # Title
+      HTML('
+          <img  class ="image" src="ehden_logo.png">
+          '), 
       div(
-        class = "h3 mb-2 mt-3 text-left fw-bold",
-        "EHDEN Cancer Survival Dashboard"
+        class = "h3 mb-2 mt-3 text-left",
+        "Cancer Survival Dashboard"
       ),
       
       # Action buttons
@@ -96,9 +102,7 @@ ui <- fillPage(
           "Age group"
         ),
         selectInput("age",NULL,selected="All",
-                    choices = list("50-69",
-                                   "70+",
-                                   "All")),
+                    choices = list("All")),
         div(
           class = "control-label text-left mb-2 mt-2 fw-bold",
           "Sex"
@@ -118,8 +122,8 @@ ui <- fillPage(
     ),
     
     
+    # Results panel -----------------------------------------------------------
     
-    # RESULTS PANEL ------    
     div(
       class="d-flex flex-row flex-grow-1 flex-wrap align-items-start align-content-start  justify-content-center p-3",
       style="flex-basis: 300px; margin-top: 50px",
@@ -165,14 +169,14 @@ ui <- fillPage(
             class = "control-label text-left mb-2 mt-2 fw-bold",
             sliderInput("hazTimeRange",NULL,min=0, 
                         max=25,value=c(0, 25),step=1)
-            ),
+          ),
           highchartOutput("hazardPlot")
         )
       ),
       
       # Goodness of fit table card
       div(
-        class="res-card w-50",
+        class="res-card-tab w-50",
         div(
           class = "res shadow border rounded-3 bg-white p-3",
           div(
@@ -190,10 +194,10 @@ ui <- fillPage(
         )
       )
     )
-    ),
-    
-    
-    
-    modalDivs()
-    
-  )
+  ),
+  
+  
+  
+  modalDivs()
+  
+)

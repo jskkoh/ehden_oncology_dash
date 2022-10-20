@@ -4,28 +4,14 @@ library(tidyverse)
 library(DT)
 library(readxl)
 
-
-# Define sample of time observations kept 
-survFrac <- 0.01
 # Load survival curve, hazard rate and GoF data 
-survExCprd_df = read_csv("./data/survivalCurveExtrapolations.csv",col_types = cols()) %>%
-  mutate(time=round(time,3),est=round(est,3),lcl=round(lcl,3),ucl=round(ucl,3)) %>%
-  group_by(Method,Cancer,Age,Gender) %>%  sample_frac(survFrac, replace = FALSE) %>% 
-  ungroup() %>% arrange(time)
-rateHazCprd_df = read_csv("./data/survivalHazardRates.csv",col_types = cols()) %>%
-  mutate(time=round(time,3),est=round(est,4),lcl=round(lcl,4),ucl=round(ucl,4)) %>%
-  group_by(Method,Cancer,Age,Gender) %>%  sample_frac(survFrac, replace = FALSE) %>% 
-  ungroup() %>% arrange(time)
-fitCprd_df = read_csv("./data/survivalGOF.csv",col_types = cols()) %>%
-  mutate(trisk=round(trisk,0),logLik=round(logLik,3),AIC=round(AIC,3),BIC=round(BIC,3))
-kmCprd_df = read_csv("./data/survivalKM.csv",col_types = cols()) %>%
-  mutate(time=round(time,3),est=round(est,3),lcl=round(lcl,3),ucl=round(ucl,3)) %>%
-  group_by(Method,Cancer,Age,Gender) %>%  sample_frac(survFrac, replace = FALSE) %>% 
-  ungroup() %>% arrange(time)
-rateHazObsCprd_df = read_csv("./data/survivalHazardRatesObs.csv",col_types = cols()) %>%
-  mutate(time=round(time,3),est=round(est,3),lcl=round(lcl,3),ucl=round(ucl,3)) %>%
-  group_by(Method,Cancer,Age,Gender) %>%  sample_frac(survFrac, replace = FALSE) %>% 
-  ungroup() %>% arrange(time)
+survExCprd_df = read_csv("./data/survExCprd.csv",col_types = cols()) 
+rateHazCprd_df = read_csv("./data/rateHazCprd.csv",col_types = cols())
+fitCprd_df = read_csv("./data/fitCprd.csv",col_types = cols())
+kmCprd_df = read_csv("./data/kmCprd.csv",col_types = cols()) 
+rateHazObsCprd_df = read_csv("./data/rateHazObsCprd.csv",col_types = cols())
+survAvgCprd_df = read_csv("./data/survAvgCprd.csv",col_types = cols())
+riskTableCprd_df = read_csv("./data/riskTableCprd.csv",col_types = cols())
 
 # Load analysis functions
 source("./R/cancerDashFunctions.R")
@@ -33,7 +19,6 @@ source("./R/cancerDashFunctions.R")
 # Load loading page and help box code
 source("./R/text_boxes.R")
 source("./R/intro_page.R")
-
 
 # Rename highchart download button
 lang <- getOption("highcharter.lang")
@@ -43,12 +28,8 @@ options(highcharter.lang = lang)
 
 shinyServer(function(input, output,session) {
   
-  
-  
   # Reactive data -----------------------------------------------------------
-  
   reactiveData = reactiveValues()
-  
   
   observe({
     
@@ -58,6 +39,8 @@ shinyServer(function(input, output,session) {
       fit_df = fitCprd_df
       km_df = kmCprd_df
       rateHazObs_df = rateHazObsCprd_df
+      survAvg_df = survAvgCprd_df
+      riskTable_df = riskTableCprd_df
     }
     
     reactiveData$tableSurvPlot = survPlotTable(
@@ -95,6 +78,19 @@ shinyServer(function(input, output,session) {
       input$sex 
     )
     
+    reactiveData$meanSurv =  pull(survAvgCprd_df %>% 
+                                    filter(Cancer==input$cancerType) %>%
+                                    select(meanSurv))
+    reactiveData$medianSurv =  pull(survAvgCprd_df %>% 
+                                      filter(Cancer==input$cancerType) %>%
+                                      select(medianSurv))
+    
+    reactiveData$meanSurvText = paste0("Mean survival: <b>",
+                                       reactiveData$meanSurv,
+                                       "</b><br>",
+                                       "Median survival: <b>",
+                                       reactiveData$medianSurv,
+                                       "</b>")
   })
   
   cancerName = reactive ({
@@ -130,8 +126,7 @@ shinyServer(function(input, output,session) {
   output$fitTable = renderDataTable({
     
     withProgress(message = 'Loading data table',{
-      table = reactiveData$tableGOF
-      datatable(table,
+      datatable(reactiveData$tableGOF,
                 rownames = FALSE,
                 options = list(paging=FALSE,searching=FALSE,info=FALSE))
     })
@@ -180,8 +175,11 @@ shinyServer(function(input, output,session) {
         ),
         linkedTo = "km", 
         showInLegend = FALSE,
-        color = hex_to_rgba("light gray", 0.2),  
+        color = hex_to_rgba("light gray", 0.02),  
         zIndex = 0
+      ) %>%
+      hc_title(text = reactiveData$meanSurvText,align="right",x=0,y=20,
+               verticalAlign='top',floating="true", style=list(fontSize="14px") 
       ) %>%
       hc_tooltip(
         valueDecimals = 3
@@ -258,7 +256,7 @@ shinyServer(function(input, output,session) {
         ),
         linkedTo = "obs", 
         showInLegend = FALSE,
-        color = hex_to_rgba("light gray", 0.1),  
+        color = hex_to_rgba("light gray", 0.02),  
         zIndex = 0
       ) %>%
       hc_tooltip(
