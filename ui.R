@@ -174,14 +174,34 @@ ui <- fillPage(
         )
       ),
       
-      # Goodness of fit table card
+      # No. at risk table card
       div(
-        class="res-card-tab w-50",
+        class="res-card-risk w-50",
         div(
           class = "res shadow border rounded-3 bg-white p-3",
           div(
             class = "fs-4 mb-3 mt-2 ms-2",
-            textOutput("gofTableTitle")
+            "Number at risk by time"
+          ),
+          
+          div(
+            class = "res-line ",
+            div(
+              style="font-size:80%",
+              dataTableOutput("riskTable")
+            )
+          )
+        )
+      ),
+      
+      # Goodness of fit table card
+      div(
+        class="res-card-gof w-50",
+        div(
+          class = "res shadow border rounded-3 bg-white p-3",
+          div(
+            class = "fs-4 mb-3 mt-2 ms-2",
+            "Extrapolation goodness-of-fit statistics"
           ),
           
           div(
@@ -193,6 +213,7 @@ ui <- fillPage(
           )
         )
       )
+      
     )
   ),
   

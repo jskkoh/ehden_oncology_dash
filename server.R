@@ -17,8 +17,8 @@ riskTableCprd_df = read_csv("./data/riskTableCprd.csv",col_types = cols())
 source("./R/cancerDashFunctions.R")
 
 # Load loading page and help box code
-source("./R/text_boxes.R")
-source("./R/intro_page.R")
+source("./R/textBoxes.R")
+source("./R/introPage.R")
 
 # Rename highchart download button
 lang <- getOption("highcharter.lang")
@@ -78,6 +78,13 @@ shinyServer(function(input, output,session) {
       input$sex 
     )
     
+    reactiveData$tableRisk = riskTable(
+      riskTable_df,
+      input$cancerType,
+      input$age,
+      input$sex 
+    )
+    
     reactiveData$meanSurv =  pull(survAvgCprd_df %>% 
                                     filter(Cancer==input$cancerType) %>%
                                     select(meanSurv))
@@ -85,12 +92,12 @@ shinyServer(function(input, output,session) {
                                       filter(Cancer==input$cancerType) %>%
                                       select(medianSurv))
     
-    reactiveData$meanSurvText = paste0("Mean survival: <b>",
-                                       reactiveData$meanSurv,
-                                       "</b><br>",
-                                       "Median survival: <b>",
-                                       reactiveData$medianSurv,
-                                       "</b>")
+    reactiveData$meanSurvText = if(is.na(reactiveData$medianSurv)) {
+      paste0("Mean survival: <b>",reactiveData$meanSurv," years</b><br>")
+    } else {
+      paste0("Mean survival: <b>",reactiveData$meanSurv," years</b><br>",
+             "Median survival: <b>",reactiveData$medianSurv," years</b>")
+    } 
   })
   
   cancerName = reactive ({
@@ -115,13 +122,19 @@ shinyServer(function(input, output,session) {
     paste0("Hazard function over time for ",cancerName())
   })
   
-  output$gofTableTitle = renderText({
-    paste0("Survival curve extrapolation goodness-of-fit statistics")
-  })
   
   
   
   # Tables ------------------------------------------------------------------
+  
+  output$riskTable = renderDataTable({
+    
+    withProgress(message = 'Loading data table',{
+      datatable(reactiveData$tableRisk,
+                rownames = FALSE,
+                options = list(paging=FALSE,searching=FALSE,info=FALSE))
+    })
+  })
   
   output$fitTable = renderDataTable({
     
@@ -131,6 +144,8 @@ shinyServer(function(input, output,session) {
                 options = list(paging=FALSE,searching=FALSE,info=FALSE))
     })
   })
+  
+
   
   
   # Highcharter plots -------------------------------------------------------
@@ -190,7 +205,7 @@ shinyServer(function(input, output,session) {
         max=1,min=0
       ) %>%
       hc_xAxis(
-        title = list(text = "Time"),
+        title = list(text = "Time (years)"),
         min=input$survTimeRange[1],max=input$survTimeRange[2]
       ) %>%
       hc_exporting(

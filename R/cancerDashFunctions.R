@@ -36,3 +36,11 @@ gofTable <- function(dataGOF,cancerType,age,sex) {
     select(Method,logLik,AIC,BIC)
   return(tableGOF)
 }
+
+riskTable <- function(dataRisk,cancerType,age,sex) {
+  tableRisk <- dataRisk %>% 
+    filter(Cancer==cancerType & Age==age & Gender==sex) %>%
+    gather("Time (years)","No. at risk",2:9) %>%
+    select(-Cancer,-Age,-Gender)
+  return(tableRisk)
+}

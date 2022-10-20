@@ -39,10 +39,22 @@ body {
   display: inline-flex;
 }
 
-.res-card-tab{
+.res-card-risk{
   flex-grow: 1;
   
-  min-height: 300px;
+  min-height: 400px;
+  
+  min-width: 400px;
+  max-width: 400px;
+  
+  padding: 10px;
+  display: inline-flex;
+}
+
+.res-card-gof{
+  flex-grow: 1;
+  
+  min-height: 400px;
   
   min-width: 600px;
   max-width: 600px;
@@ -131,7 +143,6 @@ body {
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(1 45 92 / 25%);
 }
-
 
 .credits {
     margin-top: auto; 
