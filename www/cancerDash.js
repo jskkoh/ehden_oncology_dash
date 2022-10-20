@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', (event) => {
 
-// fade out intro page
+// Intro page
     function removeFadeOut( el, speed , redraw = false) {
         var seconds = speed/1000;
         el.style.transition = "opacity "+seconds+"s ease";
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   
 
-    // speedy way to remove intro page: just press enter
+    // Remove intro page (just press enter)
     window.addEventListener('keydown', function(e){
         if (e.keyCode == 13) {
             document.querySelector("#close_intro").click()
@@ -42,41 +42,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
       });
 
 
-      // link to ehden website
+      // Link to ehden website
       document.querySelector("#ehden").addEventListener("click", () => {
         window.open('https://www.ehden.eu/', '_blank')
       });
 
 
-  // author tooltip
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-
-      var exampleEl = document.querySelector("#credits")
-      var original = exampleEl.getAttribute('data-bs-original-title');
-      var tooltip = new bootstrap.Tooltip(exampleEl)
-      
-    document.querySelector("#credits").addEventListener("click", () => {
-     /* Copy the text inside the text field */
-      navigator.clipboard.writeText(original);
-      document.querySelector("#credits").setAttribute('data-bs-original-title', "Copied to cliboard!");
-      tooltip.show()
-      setTimeout(function() {
-        tooltip.hide()
-        document.querySelector("#credits").setAttribute('data-bs-original-title', original);
-      }, 2000); 
-      
-      
-    });
 
 
   })
 
 
 
-
+// Highcart renderer
 Highcharts.SVGRenderer.prototype.symbols.download = function (x, y, w, h) {
     var path = [
         // Arrow stem
