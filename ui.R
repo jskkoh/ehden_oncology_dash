@@ -185,7 +185,7 @@ ui <- fillPage(
           ),
           
           div(
-            class = "res-line ",
+            class = "res-line justify-content-center",
             div(
               style="font-size:80%",
               dataTableOutput("riskTable")
@@ -205,7 +205,7 @@ ui <- fillPage(
           ),
           
           div(
-            class = "res-line ",
+            class = "res-line justify-content-center",
             div(
               style="font-size:80%",
               dataTableOutput("fitTable")
