@@ -1,9 +1,0 @@
-"Cancer","Age","Gender","meanSurv","medianSurv"
-"BreastCancer","All","Both",10.996,NA
-"ColorectalCancer","All","Both",6.993,5.474
-"HeadNeckCancer","All","Both",7.505,7.003
-"LiverCancer","All","Both",2.605,0.792
-"LungCancer","All","Both",2.175,0.704
-"PancreaticCancer","All","Both",1.285,0.378
-"ProstateCancer","All","Both",9.529,11.899
-"StomachCancer","All","Both",2.858,0.833

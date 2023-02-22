@@ -4,6 +4,7 @@ library(shinyjs)
 library(shinyWidgets)
 library(highcharter)
 library(waiter)
+library(DT)
 
 
 # UI setup ----------------------------------------------------------------
@@ -72,7 +73,7 @@ ui <- fillPage(
           "Dataset"
         ),
         selectInput("dataset",NULL,selected="CPRD (UK)",
-                    choices = list("CPRD (UK)" = "cprd")),
+                    choices = list("CPRD (UK)" = "CPRD_Aurum")),
         
         # Cancer type
         div(
@@ -188,7 +189,7 @@ ui <- fillPage(
             class = "res-line justify-content-center",
             div(
               style="font-size:80%",
-              dataTableOutput("riskTable")
+              DT::dataTableOutput("riskTable")
             )
           )
         )
@@ -208,7 +209,7 @@ ui <- fillPage(
             class = "res-line justify-content-center",
             div(
               style="font-size:80%",
-              dataTableOutput("fitTable")
+              DT::dataTableOutput("fitTable")
             )
           )
         )

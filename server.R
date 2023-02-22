@@ -4,14 +4,21 @@ library(tidyverse)
 library(DT)
 library(readxl)
 
-# Load survival curve, hazard rate and GoF data 
-survExCprd_df = read_csv("./data/survExCprd.csv",col_types = cols()) 
-rateHazCprd_df = read_csv("./data/rateHazCprd.csv",col_types = cols())
-fitCprd_df = read_csv("./data/fitCprd.csv",col_types = cols())
-kmCprd_df = read_csv("./data/kmCprd.csv",col_types = cols()) 
-rateHazObsCprd_df = read_csv("./data/rateHazObsCprd.csv",col_types = cols())
-survAvgCprd_df = read_csv("./data/survAvgCprd.csv",col_types = cols())
-riskTableCprd_df = read_csv("./data/riskTableCprd.csv",col_types = cols())
+
+# extrap_param = readRDS("./data/extrapolation_parameters_CPRD_Aurum.rds")
+
+# Load data ---------------------------------------------------------------
+
+# Goodness of fit statistics
+gof_df_all = readRDS("./data/fitCprd.rds") 
+# K-M survival curves
+surv_df_all = readRDS("./data/survCprd.rds") 
+# Hazard rate over time
+rateHaz_df_all = readRDS("./data/rateHazCprd.rds")
+# Mean/median survival estimates
+survAvg_df_all = readRDS("./data/survAvgCprd.rds") 
+# Number at risk summary table
+riskTable_df_all = readRDS("./data/riskTableCprd.rds") 
 
 # Load analysis functions
 source("./R/cancerDashFunctions.R")
@@ -33,63 +40,67 @@ shinyServer(function(input, output,session) {
   
   observe({
     
-    if(input$dataset == "cprd"){
-      survEx_df = survExCprd_df
-      rateHaz_df = rateHazCprd_df
-      fit_df = fitCprd_df
-      km_df = kmCprd_df
-      rateHazObs_df = rateHazObsCprd_df
-      survAvg_df = survAvgCprd_df
-      riskTable_df = riskTableCprd_df
-    }
-    
+    # Use functions from 'cancerDashFunctions.R' to filter all data based on 
+    # Age/Sex/Cancer/Dataset inputs
     reactiveData$tableSurvPlot = survPlotTable(
-      survEx_df,
+      surv_df_all,
       input$cancerType,
       input$age,
-      input$sex
+      input$sex,
+      input$dataset
     )
     
     reactiveData$tableSurvPlotKM = survPlotTableKM(
-      km_df,
+      surv_df_all,
       input$cancerType,
       input$age,
-      input$sex
+      input$sex,
+      input$dataset
     )
     
     reactiveData$tableHazPlot = hazPlotTable(
-      rateHaz_df,
+      rateHaz_df_all,
       input$cancerType,
       input$age,
-      input$sex
+      input$sex,
+      input$dataset
     )
     
-    reactiveData$tableHazObsPlot = hazPlotTable(
-      rateHazObs_df,
+    reactiveData$tableHazObsPlot = hazPlotTableObs(
+      rateHaz_df_all,
       input$cancerType,
       input$age,
-      input$sex
+      input$sex,
+      input$dataset
     )
     
     reactiveData$tableGOF = gofTable(
-      fit_df,
+      gof_df_all,
       input$cancerType,
       input$age,
-      input$sex 
+      input$sex,
+      input$dataset
     )
     
     reactiveData$tableRisk = riskTable(
-      riskTable_df,
+      riskTable_df_all,
       input$cancerType,
       input$age,
-      input$sex 
+      input$sex,
+      input$dataset
     )
     
-    reactiveData$meanSurv =  pull(survAvgCprd_df %>% 
-                                    filter(Cancer==input$cancerType) %>%
+    reactiveData$tableSurvAvg = survAvgTable(
+      survAvg_df_all,
+      input$cancerType,
+      input$age,
+      input$sex,
+      input$dataset
+    )
+
+    reactiveData$meanSurv =  pull(reactiveData$tableSurvAvg %>% 
                                     select(meanSurv))
-    reactiveData$medianSurv =  pull(survAvgCprd_df %>% 
-                                      filter(Cancer==input$cancerType) %>%
+    reactiveData$medianSurv =  pull(reactiveData$tableSurvAvg %>% 
                                       select(medianSurv))
     
     reactiveData$meanSurvText = if(is.na(reactiveData$medianSurv)) {
@@ -127,22 +138,18 @@ shinyServer(function(input, output,session) {
   
   # Tables ------------------------------------------------------------------
   
-  output$riskTable = renderDataTable({
+  output$riskTable = DT::renderDataTable({
     
-    withProgress(message = 'Loading data table',{
       datatable(reactiveData$tableRisk,
                 rownames = FALSE,
                 options = list(paging=FALSE,searching=FALSE,info=FALSE))
-    })
   })
   
-  output$fitTable = renderDataTable({
+  output$fitTable = DT::renderDataTable({
     
-    withProgress(message = 'Loading data table',{
       datatable(reactiveData$tableGOF,
                 rownames = FALSE,
                 options = list(paging=FALSE,searching=FALSE,info=FALSE))
-    })
   })
   
 
@@ -157,7 +164,7 @@ shinyServer(function(input, output,session) {
   output$hazardPlot = renderHighchart({
     highchartHaz()
   })
-  
+ 
   # Survival curve extrapolation plot
   highchartSurv <- reactive({
     hchart(reactiveData$tableSurvPlot,"line",
@@ -166,8 +173,8 @@ shinyServer(function(input, output,session) {
              y = est,
              group = Method
            ),
-           color = c("#999999","#E69F00","#56B4E9","#009E73",
-                     "#F0E442","#0072B2","#D55E00","#CC79A7")
+           color = c("#88CCEE","#CC6677","#DDCC77","#117733","#332288",
+                     "#AA4499","#44AA99","#999933","#882255","#661100")
     ) %>%
       hc_add_series(
         reactiveData$tableSurvPlotKM,"line",
@@ -248,8 +255,9 @@ shinyServer(function(input, output,session) {
              y = est,
              group = Method
            ),
-           color = c("#999999","#E69F00","#56B4E9","#009E73",
-                     "#F0E442","#0072B2","#D55E00","#CC79A7")) %>%
+           color = c("#88CCEE","#CC6677","#DDCC77","#117733","#332288",
+                     "#AA4499","#44AA99","#999933","#882255","#661100") 
+           ) %>%
       hc_add_series(
         reactiveData$tableHazObsPlot,"line",
         name="Observed",

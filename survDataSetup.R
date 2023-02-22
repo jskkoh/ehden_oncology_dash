@@ -1,59 +1,66 @@
 # Script to load, format and save survival extrapolation data 
 # to be loaded into the dashboard
 
-monthIntervals <- data.frame(time2=seq(0,25,1/6)) %>% 
+# Specify a set of intervals to take subset of K-M observations
+monthIntervals <- data.frame(time2=seq(0,25,1/52)) %>% 
   mutate(matchid=row_number())
 
 # For extrapolation and hazard data, timepoints are matched to nearest 
 # specified interval
 
-# Survival extrapolation data
-survExCprd_df = read_excel("./data/cancer_extrapolation_results_ALL.xlsx",
-                           "extrapolation_all") %>% rowwise() %>%
-  mutate(matchid=which.min(abs(monthIntervals$time2-time))) %>%
-  left_join(monthIntervals,by="matchid") %>%
-  mutate(absDiff=abs(time2-time)) %>% group_by(Method,Cancer,Age,Gender,time2) %>%
-  filter(absDiff==min(absDiff)) %>%
-  mutate(time=round(time2,3),est=round(est,5),lcl=round(lcl,5),ucl=round(ucl,5))
-
-# Hazard data
-rateHazCprd_df = read_excel("./data/cancer_extrapolation_results_ALL.xlsx",
-                           "hazardrate_all") %>% rowwise() %>%
-  mutate(matchid=which.min(abs(monthIntervals$time2-time))) %>%
-  left_join(monthIntervals,by="matchid") %>%
-  mutate(absDiff=abs(time2-time)) %>% group_by(Method,Cancer,Age,Gender,time2) %>%
-  filter(absDiff==min(absDiff)) %>%
-  mutate(time=round(time2,3),est=round(est,5),lcl=round(lcl,5),ucl=round(ucl,5))
-
 # Goodness of fit statistics
-fitCprd_df = read_excel("./data/cancer_extrapolation_results_ALL.xlsx","GOF_all") %>%
-  mutate(trisk=round(trisk,0),logLik=round(logLik,3),AIC=round(AIC,3),BIC=round(BIC,3))
+fitCprd_df = readRDS("./data/Goodness_of_fit_results_CPRD_Aurum.rds") %>%
+  mutate(trisk=round(trisk,0),logLik=round(logLik,3),
+         AIC=round(AIC,3),BIC=round(BIC,3)) %>%
+  select(-Stratification,-GenderAge)
 
-# KM survival
-kmCprd_df = read_excel("./data/cancer_KM_observed_results_ALL.xlsx","KM_observed_all") %>%
-  mutate(time=round(time,3),est=round(est,5),lcl=round(lcl,5),ucl=round(ucl,5)) %>%
-  arrange(time)
+# Survival curves
+SurvCprd_df = readRDS("./data/survival_estimates_CPRD_Aurum.rds") %>%
+  mutate(Method=ifelse(Method=="Kaplan-Meier","Observed",Method),
+         Age1=sub("_.*","",GenderAge),
+         Gender1=sub(".*_","",GenderAge),
+         Age=ifelse(!is.na(GenderAge),Age1,Age),
+         Gender=ifelse(!is.na(GenderAge),Gender1,Gender)) %>%
+  # Taking the subset of observations specified in monthIntervals
+  rowwise() %>%
+  mutate(matchid=which.min(abs(monthIntervals$time2-time))) %>%
+  left_join(monthIntervals,by="matchid") %>%
+  mutate(absDiff=abs(time2-time)) %>% group_by(Method,Cancer,Age,Gender,time2) %>%
+  filter(absDiff==min(absDiff)) %>%
+  mutate(time=round(time2,3),est=round(est,5),lcl=round(lcl,5),ucl=round(ucl,5)) %>%
+  ungroup() %>%
+  select(-Stratification,-GenderAge,-matchid,-time2,-absDiff) 
 
-# Observed hazard rates
-rateHazObsCprd_df = read_excel("./data/cancer_KM_observed_results_ALL.xlsx",
-                               "KM_hazard_rate_all") %>%
-  mutate(time=round(time,3),est=round(est,5),lcl=round(lcl,5),ucl=round(ucl,5)) %>%
-  arrange(time)
+# Hazard rate over time
+rateHazCprd_df = readRDS("./data/hazard_overtime_results_CPRD_Aurum.rds") %>%
+  mutate(Method=ifelse(Method=="Kaplan-Meier","Observed",Method),
+         Age1=sub("_.*","",GenderAge),
+         Gender1=sub(".*_","",GenderAge),
+         Age=ifelse(!is.na(GenderAge),Age1,Age),
+         Gender=ifelse(!is.na(GenderAge),Gender1,Gender)) %>%
+  # Taking the subset of observations specified in monthIntervals
+  rowwise() %>%
+  mutate(matchid=which.min(abs(monthIntervals$time2-time))) %>%
+  left_join(monthIntervals,by="matchid") %>%
+  mutate(absDiff=abs(time2-time)) %>% group_by(Method,Cancer,Age,Gender,time2) %>%
+  filter(absDiff==min(absDiff)) %>%
+  mutate(time=round(time2,3),est=round(est,5),lcl=round(lcl,5),ucl=round(ucl,5)) %>%
+  ungroup() %>%
+  select(-Stratification,-GenderAge,-matchid,-time2,-absDiff) 
 
-# Mean and median survival
-survAvgCprd_df = read_excel("./data/cancer_KM_observed_results_ALL.xlsx","KM_MedianSur_all") %>%
+# Mean/median survival estimates
+survAvgCprd_df = readRDS("./data/median_survival_results_CPRD_Aurum.rds") %>%
   mutate(meanSurv=round(`*rmean`,3),medianSurv=round(median,3)) %>%
-  select(Cancer,Age,Gender,meanSurv,medianSurv)
+  select(Cancer,Age,Gender,meanSurv,medianSurv,Database)
 
-# Risk table
-riskTableCprd_df = read_excel("./data/cancer_KM_observed_results_ALL.xlsx","KM_risktable_all") %>%
-  select(-Method)
+# Number at risk summary table
+riskTableCprd_df = readRDS("./data/risk_table_results_CPRD_Aurum.rds") %>%
+  select(-Method,-Stratification,-GenderAge)
+rownames(riskTableCprd_df) <- NULL
 
 # Write all formatted csv data files
-write.csv(survExCprd_df,"./data/survExCprd.csv",row.names=F)
-write.csv(rateHazCprd_df,"./data/rateHazCprd.csv",row.names=F)
-write.csv(fitCprd_df,"./data/fitCprd.csv",row.names=F)
-write.csv(kmCprd_df,"./data/kmCprd.csv",row.names=F)
-write.csv(rateHazObsCprd_df,"./data/rateHazObsCprd.csv",row.names=F)
-write.csv(survAvgCprd_df,"./data/survAvgCprd.csv",row.names=F)
-write.csv(riskTableCprd_df,"./data/riskTableCprd.csv",row.names=F)
+saveRDS(SurvCprd_df,"./data/survCprd.rds")
+saveRDS(rateHazCprd_df,"./data/rateHazCprd.rds")
+saveRDS(fitCprd_df,"./data/fitCprd.rds")
+saveRDS(survAvgCprd_df,"./data/survAvgCprd.rds")
+saveRDS(riskTableCprd_df,"./data/riskTableCprd.rds")
