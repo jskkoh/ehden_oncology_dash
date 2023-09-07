@@ -4,7 +4,6 @@ library(tidyverse)
 library(DT)
 library(readxl)
 
-
 # extrap_param = readRDS("./data/extrapolation_parameters_CPRD_Aurum.rds")
 
 # Load data ---------------------------------------------------------------
@@ -22,6 +21,7 @@ riskTable_df_all = readRDS("./data/riskTableCprd.rds")
 
 # Load analysis functions
 source("./R/cancerDashFunctions.R")
+source("./R/plotCombinations.R")
 
 # Load loading page and help box code
 source("./R/textBoxes.R")
@@ -109,6 +109,16 @@ shinyServer(function(input, output,session) {
       paste0("Mean survival: <b>",reactiveData$meanSurv," years</b><br>",
              "Median survival: <b>",reactiveData$medianSurv," years</b>")
     } 
+    
+    reactiveData$subgroupPossible = pull(plotCombinations %>% 
+                                           filter(Cancer==input$cancerType & 
+                                                    Age==input$age & 
+                                                    Gender==input$sex & 
+                                                    Database==input$dataset) %>%
+                                           select(Render)
+    )
+
+    
   })
   
   cancerName = reactive ({

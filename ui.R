@@ -103,7 +103,15 @@ ui <- fillPage(
           "Age group"
         ),
         selectInput("age",NULL,selected="All",
-                    choices = list("All")),
+                    choices = list("All",
+                                   "<30",
+                                   "30-39",
+                                   "40-49",
+                                   "50-59",
+                                   "60-69",
+                                   "70-79",
+                                   "80-89",
+                                   ">=90")),
         div(
           class = "control-label text-left mb-2 mt-2 fw-bold",
           "Sex"
