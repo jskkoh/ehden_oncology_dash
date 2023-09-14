@@ -9,7 +9,7 @@ landingDiv = function(){
                       EHDEN cancer oncology survival tool 
                     </div>
                     <div class="intro-text fs-2 intro-subtitle mx-auto my-5">
-                        Danielle Newby, James Love-Koh, Ravinder Claire etc...
+                        Danielle Newby, James Koh, Ravinder Claire etc...
                     </div>
                     <div class = "logos d-flex flex-row justify-content-center align-items-center flex-wrap mx-auto px-5">
                         <div class="cell">
