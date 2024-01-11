@@ -139,6 +139,22 @@ body {
   transform: scale(1.01)
 }
 
+.btn-run {
+  color: #000000;
+  background-color: #fff;
+  border-radius: 10px;
+  border: solid 5px #000000;
+  padding: 5px 10px;
+  transition: all .1s ease-in-out;
+  margin: 0 5px;
+  border-color: #000000 !important; 
+}
+.btn-run:hover {
+  opacity: 0.9;
+  color: var(--primary_col);
+  transform: scale(1.01)
+}
+
 .btn-check:focus+.btn, .btn:focus, .form-control:focus {
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(1 45 92 / 25%);

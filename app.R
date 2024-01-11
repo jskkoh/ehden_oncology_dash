@@ -16,15 +16,15 @@ library(readxl)
 # Load data ---------------------------------------------------------------
 
 # Goodness of fit statistics
-gof_df_all = readRDS("./data/fitCprd.rds") 
+gof_df_all = read.csv("./data/fitCprd.csv") 
 # K-M survival curves
-surv_df_all = readRDS("./data/survCprd.rds") 
+surv_df_all = read.csv("./data/survCprd.csv") 
 # Hazard rate over time
-rateHaz_df_all = readRDS("./data/rateHazCprd.rds")
+rateHaz_df_all = read.csv("./data/rateHazCprd.csv")
 # Mean/median survival estimates
-survAvg_df_all = readRDS("./data/survAvgCprd.rds") 
+survAvg_df_all = read.csv("./data/survAvgCprd.csv") 
 # Number at risk summary table
-riskTable_df_all = readRDS("./data/riskTableCprd.rds") 
+riskTable_df_all = read.csv("./data/riskTableCprd.csv") 
 
 # Load analysis functions
 source("./R/cancerDashFunctions.R")
@@ -106,7 +106,7 @@ ui <- fillPage(
           "Dataset"
         ),
         selectInput("dataset",NULL,selected="CPRD (UK)",
-                    choices = list("CPRD (UK)" = "CPRD_Aurum")),
+                    choices = list("CPRD (UK)" = "CPRD_GOLD")),
         
         # Cancer type
         div(
@@ -116,16 +116,16 @@ ui <- fillPage(
         selectizeInput(
           inputId = "cancerType", 
           label = NULL, 
-          selected = "BreastCancer",
+          selected = "Breast",
           choices = list(
-            "Breast cancer" = "BreastCancer",
-            "Colorectal cancer" = "ColorectalCancer",
-            "Head and neck cancer" = "HeadNeckCancer",
-            "Liver cancer" = "LiverCancer",
-            "Lung cancer" = "LungCancer",
-            "Pancreatic cancer" = "PancreaticCancer",
-            "Prostate cancer" = "ProstateCancer",
-            "Stomach cancer" = "StomachCancer"
+            "Breast cancer" = "Breast",
+            "Colorectal cancer" = "Colorectal",
+            "Head and neck cancer" = "Head_and_neck",
+            "Liver cancer" = "Liver",
+            "Lung cancer" = "Lung",
+            "Pancreatic cancer" = "Pancreatic",
+            "Prostate cancer" = "Prostate",
+            "Stomach cancer" = "Stomach"
           )
         ),
         
@@ -137,14 +137,12 @@ ui <- fillPage(
         ),
         selectInput("age",NULL,selected="All",
                     choices = list("All",
-                                   "<30",
-                                   "30-39",
-                                   "40-49",
-                                   "50-59",
-                                   "60-69",
-                                   "70-79",
-                                   "80-89",
-                                   ">=90")),
+                                   "18 to 39",
+                                   "40 to 49",
+                                   "50 to 59",
+                                   "60 to 69",
+                                   "70 to 79",
+                                   "80 +")),
         div(
           class = "control-label text-left mb-2 mt-2 fw-bold",
           "Sex"
@@ -153,6 +151,11 @@ ui <- fillPage(
                     choices = list("Female",
                                    "Male",
                                    "Both")),
+        HTML('
+          <br>
+          '), 
+        actionButton("run", "Run analysis",icon = icon("circle-right"), 
+                     class = "btn-run my-2"),
         
         div(
           class="d-flex  flex-row justify-content-center flex-wrap w-100 pt-3 mt-2 mb-2 border-top border-bottom",
@@ -187,7 +190,7 @@ ui <- fillPage(
           div(
             class = "control-label text-left mb-2 mt-2 fw-bold",
             sliderInput("survTimeRange",NULL,min=0, 
-                        max=25,value=c(0, 25),step=1)
+                        max=ceiling(max(surv_df_all$time)),value=c(0, ceiling(max(surv_df_all$time))),step=1)
           ),
           highchartOutput("survivalPlot")
         )
@@ -210,7 +213,7 @@ ui <- fillPage(
           div(
             class = "control-label text-left mb-2 mt-2 fw-bold",
             sliderInput("hazTimeRange",NULL,min=0, 
-                        max=25,value=c(0, 25),step=1)
+                        max=ceiling(max(surv_df_all$time)),value=c(0, ceiling(max(surv_df_all$time))),step=1)
           ),
           highchartOutput("hazardPlot")
         )
@@ -268,99 +271,105 @@ ui <- fillPage(
 server = function(input, output, session){
 
   # Reactive data -----------------------------------------------------------
-  reactiveData = reactiveValues()
-  
-  observe({
     
     # Use functions from 'cancerDashFunctions.R' to filter all data based on 
     # Age/Sex/Cancer/Dataset inputs
-    reactiveData$tableSurvPlot = survPlotTable(
+    tableSurvPlot <- eventReactive(input$run,{ 
+      survPlotTable(
       surv_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$tableSurvPlotKM = survPlotTableKM(
+    tableSurvPlotKM <- eventReactive(input$run,{ 
+    survPlotTableKM(
       surv_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$tableHazPlot = hazPlotTable(
+    tableHazPlot <- eventReactive(input$run,{ 
+      hazPlotTable(
       rateHaz_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$tableHazObsPlot = hazPlotTableObs(
+    tableHazObsPlot <- eventReactive(input$run,{ 
+      hazPlotTableObs(
       rateHaz_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$tableGOF = gofTable(
+    tableGOF <- eventReactive(input$run,{ 
+      gofTable(
       gof_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$tableRisk = riskTable(
+    tableRisk <- eventReactive(input$run,{ 
+      riskTable(
       riskTable_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$tableSurvAvg = survAvgTable(
+    tableSurvAvg <- eventReactive(input$run,{ 
+      survAvgTable(
       survAvg_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
+    })
     
-    reactiveData$meanSurv =  pull(reactiveData$tableSurvAvg %>% 
-                                    select(meanSurv))
-    reactiveData$medianSurv =  pull(reactiveData$tableSurvAvg %>% 
-                                      select(medianSurv))
+    meanSurv<- eventReactive(input$run,{ 
+      pull(tableSurvAvg() %>% 
+             select(meanSurv))
+    })
+    medianSurv <- eventReactive(input$run,{ 
+      pull(tableSurvAvg() %>% 
+             select(medianSurv))
+    })
     
-    reactiveData$meanSurvText = if(is.na(reactiveData$medianSurv)) {
-      paste0("Mean survival: <b>",reactiveData$meanSurv," years</b><br>")
+    meanSurvText <- eventReactive(input$run,{ 
+      if(is.na(medianSurv())) {
+      paste0("Mean survival: <b>",meanSurv()," years</b><br>")
     } else {
-      paste0("Mean survival: <b>",reactiveData$meanSurv," years</b><br>",
-             "Median survival: <b>",reactiveData$medianSurv," years</b>")
+      paste0("Mean survival: <b>",meanSurv()," years</b><br>",
+             "Median survival: <b>",medianSurv()," years</b>")
     } 
-    
-    reactiveData$subgroupPossible = pull(plotCombinations %>% 
-                                           filter(Cancer==input$cancerType & 
-                                                    Age==input$age & 
-                                                    Gender==input$sex & 
-                                                    Database==input$dataset) %>%
-                                           select(Render)
-    )
-    
-    
-  })
+    })
   
-  cancerName = reactive ({
-    if(input$cancerType=="BreastCancer") {"breast cancer"}
-    else if(input$cancerType=="ColorectalCancer") {"colorectal cancer"}
-    else if(input$cancerType=="HeadNeckCancer") {"head and neck cancer"}
-    else if(input$cancerType=="LiverCancer") {"liver cancer"}
-    else if(input$cancerType=="LungCancer") {"lung cancer"}
-    else if(input$cancerType=="PancreaticCancer") {"pancreatic cancer"}
-    else if(input$cancerType=="ProstateCancer") {"prostate cancer"}
+  cancerName <- eventReactive(input$run, { 
+    if(input$cancerType=="Breast") {"breast cancer"}
+    else if(input$cancerType=="Colorectal") {"colorectal cancer"}
+    else if(input$cancerType=="Head_and_neck") {"head and neck cancer"}
+    else if(input$cancerType=="Liver") {"liver cancer"}
+    else if(input$cancerType=="Lung") {"lung cancer"}
+    else if(input$cancerType=="Pancreatic") {"pancreatic cancer"}
+    else if(input$cancerType=="Prostate") {"prostate cancer"}
     else {"stomach cancer"}
   }) 
   
@@ -382,14 +391,14 @@ server = function(input, output, session){
   
   output$riskTable = DT::renderDataTable({
     
-    datatable(reactiveData$tableRisk,
+    datatable(tableRisk(),
               rownames = FALSE,
               options = list(paging=FALSE,searching=FALSE,info=FALSE))
   })
   
   output$fitTable = DT::renderDataTable({
     
-    datatable(reactiveData$tableGOF,
+    datatable(tableGOF(),
               rownames = FALSE,
               options = list(paging=FALSE,searching=FALSE,info=FALSE))
   })
@@ -407,19 +416,20 @@ server = function(input, output, session){
     highchartHaz()
   })
   
+  colorSet = c("#88CCEE","#CC6677","#DDCC77","#117733","#332288","#AA4499",
+               "#44AA99","#999933","#882255","#661100")
   # Survival curve extrapolation plot
   highchartSurv <- reactive({
-    hchart(reactiveData$tableSurvPlot,"line",
+    hchart(tableSurvPlot(),"line",
            hcaes(
              x = time,
              y = est,
              group = Method
            ),
-           color = c("#88CCEE","#CC6677","#DDCC77","#117733","#332288",
-                     "#AA4499","#44AA99","#999933","#882255","#661100")
+           color = colorSet[1:length(unique(tableSurvPlot()$Method))]
     ) %>%
       hc_add_series(
-        reactiveData$tableSurvPlotKM,"line",
+        tableSurvPlotKM(),"line",
         hcaes(
           x = time,
           y = est
@@ -431,7 +441,7 @@ server = function(input, output, session){
         zIndex = 1
       ) %>%
       hc_add_series(
-        reactiveData$tableSurvPlotKM,"arearange",
+        tableSurvPlotKM(),"arearange",
         name="95% Confidence Interval",
         hcaes(
           x = time,
@@ -442,7 +452,7 @@ server = function(input, output, session){
         color = hex_to_rgba("light gray", 0.02),  
         zIndex = 0
       ) %>%
-      hc_title(text = reactiveData$meanSurvText,align="right",x=0,y=20,
+      hc_title(text = meanSurvText(),align="right",x=0,y=20,
                verticalAlign='top',floating="true", style=list(fontSize="14px") 
       ) %>%
       hc_tooltip(
@@ -491,17 +501,17 @@ server = function(input, output, session){
   
   # Hazard function plot
   highchartHaz <- reactive({
-    hchart(reactiveData$tableHazPlot,"line",
+    hchart(tableHazPlot(),"line",
            hcaes(
              x = time,
              y = est,
              group = Method
            ),
-           color = c("#88CCEE","#CC6677","#DDCC77","#117733","#332288",
-                     "#AA4499","#44AA99","#999933","#882255","#661100") 
+           color = colorSet[1:length(unique(tableHazPlot()$Method))]
+           
     ) %>%
       hc_add_series(
-        reactiveData$tableHazObsPlot,"line",
+        tableHazObsPlot(),"line",
         name="Observed",
         id="obs",
         hcaes(
@@ -513,7 +523,7 @@ server = function(input, output, session){
         zIndex = 1
       ) %>%
       hc_add_series(
-        reactiveData$tableHazObsPlot,"arearange",
+        tableHazObsPlot(),"arearange",
         name="95% Confidence Interval",
         hcaes(
           x = time,
