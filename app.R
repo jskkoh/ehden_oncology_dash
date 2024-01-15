@@ -2,6 +2,8 @@
 # Written by James Koh adapted from open source code by Paul Schneider
 
 library(shiny)
+library(bslib)
+library(bsicons)
 library(shinyjs)
 library(shinyWidgets)
 library(highcharter)
@@ -75,7 +77,7 @@ ui <- fillPage(
     # Input panel -------------------------------------------------------------
     div(
       class="d-flex flex-column border flex-grow-1 px-3",
-      style="min-width: 250px; max-width: 300px; flex-basis: 100px; background-color:#360000",
+      style="min-width: 250px; max-width: 300px; flex-basis: 100px; background-color:#00436C",
       
       # Title
       HTML('
@@ -129,34 +131,56 @@ ui <- fillPage(
           )
         ),
         
-        
         # Age / sex
         div(
           class = "control-label text-left mb-2 mt-2 fw-bold",
-          "Age group"
+          "Stratification"
+          ),
+        selectInput("stratify",NULL,selected="None",
+                    choices = list("None",
+                                   "Age",
+                                   "Sex")),
+        
+        conditionalPanel(
+          condition = "input.stratify=='Age'",
+          div(
+            class = "control-label text-left mb-2 mt-2 fw-bold",
+            "Age group"
+          ),
+          prettyRadioButtons(
+            inputId="age",label=NULL,selected="All",
+            choices = list("All",
+                           "18 to 39",
+                           "40 to 49",
+                           "50 to 59",
+                           "60 to 69",
+                           "70 to 79",
+                           "80 +"),
+            status = "primary",
+            icon = icon("check")
+          )
         ),
-        selectInput("age",NULL,selected="All",
-                    choices = list("All",
-                                   "18 to 39",
-                                   "40 to 49",
-                                   "50 to 59",
-                                   "60 to 69",
-                                   "70 to 79",
-                                   "80 +")),
-        div(
-          class = "control-label text-left mb-2 mt-2 fw-bold",
-          "Sex"
+        conditionalPanel(
+          condition = "input.stratify=='Sex'",
+          div(
+            class = "control-label text-left mb-2 mt-2 fw-bold",
+            "Sex"
+          ),
+          prettyRadioButtons(
+            inputId="sex",label=NULL,selected="Both",
+            choices = list("Both",
+                           "Male",
+                           "Female"),
+            status = "primary",
+            icon = icon("check")
+          )
         ),
-        selectInput("sex",NULL,selected="Both",
-                    choices = list("Female",
-                                   "Male",
-                                   "Both")),
+        
         HTML('
           <br>
           '), 
         actionButton("run", "Run analysis",icon = icon("circle-right"), 
                      class = "btn-run my-2"),
-        
         div(
           class="d-flex  flex-row justify-content-center flex-wrap w-100 pt-3 mt-2 mb-2 border-top border-bottom",
           
@@ -171,7 +195,7 @@ ui <- fillPage(
     
     div(
       class="d-flex flex-row flex-grow-1 flex-wrap align-items-start align-content-start  justify-content-center p-3",
-      style="flex-basis: 300px; margin-top: 50px",
+      style="flex-basis: 300px; margin-top: 50px; background-color:#228096",
       
       
       # Survival curve extrapolation card
@@ -270,8 +294,33 @@ ui <- fillPage(
 
 server = function(input, output, session){
 
+  
+  
+  
   # Reactive data -----------------------------------------------------------
     
+  # Reset age/sex selections when other stratification is selected
+  observeEvent(input$stratify, {
+    reset("age")
+    reset("sex")
+  })
+  
+  # Reactive value to check whether stratification is available
+  stratifyCheck <- reactive({
+    pull(analysesRunList %>%
+           filter(Cancer==input$cancerType &
+                    Age==input$age &
+                    Sex==input$sex &
+                    Method=="Kaplan-Meier") %>%
+           select(Run)
+           )
+  })
+ 
+  # Enable/disable action button based on stratification availability
+  observe({
+    toggleState(id="run", condition=stratifyCheck()=="Yes")
+  })
+ 
     # Use functions from 'cancerDashFunctions.R' to filter all data based on 
     # Age/Sex/Cancer/Dataset inputs
     tableSurvPlot <- eventReactive(input$run,{ 
@@ -384,7 +433,9 @@ server = function(input, output, session){
     paste0("Hazard function over time for ",cancerName())
   })
   
-  
+  output$stratifyChecker = renderPrint({ 
+    stratifyCheck()
+  })
   
   
   # Tables ------------------------------------------------------------------

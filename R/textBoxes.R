@@ -88,6 +88,48 @@ modalDivs = function(){
         )
         
       )
+    ),
+        # About modal
+    div(
+      class="modal fade", id="infoModal", tabindex="-1", "aria-labelledby"="infoModalLabel",  "aria-hidden"="true",
+      div(
+        class="modal-dialog modal-dialog-scrollable modal-lg",
+        div(
+          class = "modal-content px-5",
+          div(
+            class = "p-3 mt-3",
+            id = "info-modal",
+            style = "overflow-y:auto; color:#000000",
+            
+            
+            h3("About this dashboard"),
+            
+            HTML("
+        <p>
+        <p>Description of the app
+        </p>
+        
+        <ul>
+        <li>Point 1</li>
+        
+        <li>Point 2</li>
+        
+        <li>Point 3</li>
+        
+        </ul>
+        
+        <br>
+        ")
+          ),
+          
+          
+          HTML('
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>')
+        )
+        
+      )
     )
   )
   

@@ -62,24 +62,6 @@ Prostate,Log-normal,All,Male,None,None,Yes,CPRD_GOLD
 Prostate,Generalised Gamma,All,Male,None,None,Yes,CPRD_GOLD
 Prostate,Spline (1 knot),All,Male,None,None,Yes,CPRD_GOLD
 Prostate,Spline (3 knots),All,Male,None,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,All,Female,None,None,No,CPRD_GOLD
-Prostate,Gompertz,All,Female,None,None,No,CPRD_GOLD
-Prostate,WeibullPH,All,Female,None,None,No,CPRD_GOLD
-Prostate,Exponential,All,Female,None,None,No,CPRD_GOLD
-Prostate,Log-logistic,All,Female,None,None,No,CPRD_GOLD
-Prostate,Log-normal,All,Female,None,None,No,CPRD_GOLD
-Prostate,Generalised Gamma,All,Female,None,None,No,CPRD_GOLD
-Prostate,Spline (1 knot),All,Female,None,None,No,CPRD_GOLD
-Prostate,Spline (3 knots),All,Female,None,None,No,CPRD_GOLD
-Prostate,Kaplan-Meier,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Gompertz,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Exponential,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Log-normal,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),All,Both,None,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),All,Both,None,None,Yes,CPRD_GOLD
 Stomach,Kaplan-Meier,All,Both,None,None,Yes,CPRD_GOLD
 Stomach,Gompertz,All,Both,None,None,Yes,CPRD_GOLD
 Stomach,WeibullPH,All,Both,None,None,Yes,CPRD_GOLD
@@ -197,24 +179,6 @@ Pancreatic,Log-normal,All,Female,None,Sex,Yes,CPRD_GOLD
 Pancreatic,Generalised Gamma,All,Female,None,Sex,Yes,CPRD_GOLD
 Pancreatic,Spline (1 knot),All,Female,None,Sex,Yes,CPRD_GOLD
 Pancreatic,Spline (3 knots),All,Female,None,Sex,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Gompertz,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,WeibullPH,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Exponential,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Log-logistic,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Log-normal,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),All,Male,None,Sex,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Gompertz,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,WeibullPH,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Exponential,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Log-logistic,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Log-normal,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Generalised Gamma,All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Spline (1 knot),All,Female,None,Sex,No,CPRD_GOLD
-Prostate,Spline (3 knots),All,Female,None,Sex,No,CPRD_GOLD
 Stomach,Kaplan-Meier,All,Male,None,Sex,Yes,CPRD_GOLD
 Stomach,Gompertz,All,Male,None,Sex,Yes,CPRD_GOLD
 Stomach,WeibullPH,All,Male,None,Sex,Yes,CPRD_GOLD
@@ -341,24 +305,6 @@ Pancreatic,Log-normal,All,Female,Sex,None,Yes,CPRD_GOLD
 Pancreatic,Generalised Gamma,All,Female,Sex,None,Yes,CPRD_GOLD
 Pancreatic,Spline (1 knot),All,Female,Sex,None,Yes,CPRD_GOLD
 Pancreatic,Spline (3 knots),All,Female,Sex,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Gompertz,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,WeibullPH,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Exponential,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Log-logistic,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Log-normal,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Generalised Gamma,All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Spline (1 knot),All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Spline (3 knots),All,Male,Sex,None,No,CPRD_GOLD
-Prostate,Kaplan-Meier,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Gompertz,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,WeibullPH,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Exponential,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Log-logistic,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Log-normal,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Generalised Gamma,All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Spline (1 knot),All,Female,Sex,None,No,CPRD_GOLD
-Prostate,Spline (3 knots),All,Female,Sex,None,No,CPRD_GOLD
 Stomach,Kaplan-Meier,All,Male,Sex,None,Yes,CPRD_GOLD
 Stomach,Gompertz,All,Male,Sex,None,Yes,CPRD_GOLD
 Stomach,WeibullPH,All,Male,Sex,None,Yes,CPRD_GOLD
@@ -701,60 +647,60 @@ Pancreatic,Log-normal,70 to 79,Both,None,Age,Yes,CPRD_GOLD
 Pancreatic,Generalised Gamma,70 to 79,Both,None,Age,Yes,CPRD_GOLD
 Pancreatic,Spline (1 knot),70 to 79,Both,None,Age,Yes,CPRD_GOLD
 Pancreatic,Spline (3 knots),70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Gompertz,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,WeibullPH,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Exponential,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-logistic,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-normal,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),80 +,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Gompertz,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,WeibullPH,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Exponential,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-logistic,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-normal,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,18 to 39,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),18 to 39,Both,None,Age,No,CPRD_GOLD
-Prostate,Spline (3 knots),18 to 39,Both,None,Age,No,CPRD_GOLD
-Prostate,Kaplan-Meier,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Gompertz,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,WeibullPH,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Exponential,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-logistic,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-normal,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),40 to 49,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Gompertz,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,WeibullPH,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Exponential,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-logistic,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-normal,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),50 to 59,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Gompertz,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,WeibullPH,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Exponential,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-logistic,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-normal,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),60 to 69,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Gompertz,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,WeibullPH,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Exponential,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-logistic,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Log-normal,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),70 to 79,Both,None,Age,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),70 to 79,Both,None,Age,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Gompertz,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,WeibullPH,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Exponential,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-logistic,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-normal,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),80 +,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Gompertz,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,WeibullPH,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Exponential,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-logistic,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-normal,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,18 to 39,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),18 to 39,Male,None,Age,No,CPRD_GOLD
+Prostate,Spline (3 knots),18 to 39,Male,None,Age,No,CPRD_GOLD
+Prostate,Kaplan-Meier,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Gompertz,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,WeibullPH,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Exponential,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-logistic,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-normal,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),40 to 49,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Gompertz,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,WeibullPH,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Exponential,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-logistic,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-normal,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),50 to 59,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Gompertz,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,WeibullPH,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Exponential,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-logistic,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-normal,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),60 to 69,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Gompertz,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,WeibullPH,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Exponential,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-logistic,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Log-normal,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),70 to 79,Male,None,Age,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),70 to 79,Male,None,Age,Yes,CPRD_GOLD
 Stomach,Kaplan-Meier,80 +,Both,None,Age,Yes,CPRD_GOLD
 Stomach,Gompertz,80 +,Both,None,Age,Yes,CPRD_GOLD
 Stomach,WeibullPH,80 +,Both,None,Age,Yes,CPRD_GOLD
@@ -1133,60 +1079,60 @@ Pancreatic,Log-normal,70 to 79,Both,Age,None,Yes,CPRD_GOLD
 Pancreatic,Generalised Gamma,70 to 79,Both,Age,None,Yes,CPRD_GOLD
 Pancreatic,Spline (1 knot),70 to 79,Both,Age,None,Yes,CPRD_GOLD
 Pancreatic,Spline (3 knots),70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Gompertz,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Exponential,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-normal,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),80 +,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Gompertz,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Exponential,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-normal,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),18 to 39,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Gompertz,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Exponential,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-normal,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),40 to 49,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Gompertz,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Exponential,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-normal,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),50 to 59,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Gompertz,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Exponential,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-normal,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),60 to 69,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Kaplan-Meier,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Gompertz,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,WeibullPH,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Exponential,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-logistic,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Log-normal,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Generalised Gamma,70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (1 knot),70 to 79,Both,Age,None,Yes,CPRD_GOLD
-Prostate,Spline (3 knots),70 to 79,Both,Age,None,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Gompertz,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,WeibullPH,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Exponential,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-logistic,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-normal,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),80 +,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Gompertz,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,WeibullPH,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Exponential,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-logistic,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-normal,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),18 to 39,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Gompertz,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,WeibullPH,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Exponential,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-logistic,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-normal,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),40 to 49,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Gompertz,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,WeibullPH,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Exponential,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-logistic,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-normal,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),50 to 59,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Gompertz,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,WeibullPH,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Exponential,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-logistic,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-normal,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),60 to 69,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Kaplan-Meier,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Gompertz,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,WeibullPH,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Exponential,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-logistic,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Log-normal,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Generalised Gamma,70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (1 knot),70 to 79,Male,Age,None,Yes,CPRD_GOLD
+Prostate,Spline (3 knots),70 to 79,Male,Age,None,Yes,CPRD_GOLD
 Stomach,Kaplan-Meier,80 +,Both,Age,None,Yes,CPRD_GOLD
 Stomach,Gompertz,80 +,Both,Age,None,Yes,CPRD_GOLD
 Stomach,WeibullPH,80 +,Both,Age,None,Yes,CPRD_GOLD

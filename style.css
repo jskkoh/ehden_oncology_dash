@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
 
 :root {
-  --primary_col: #590701;
+  --primary_col: #00436C;
   /* #910a00 */
 }
 
@@ -19,7 +19,7 @@ html, body {
     color: #fff;
     width: 100%;
     height: 100%;
-    background-color: #ebebeb;
+    background-color: #228096;
 }
 
 body {

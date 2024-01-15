@@ -14,7 +14,12 @@ fitCprd_df = read.csv("./data/CPRD_GOLD_goodness_of_fit.csv") %>%
            (Stratification=="Sex" & Adjustment=="None") |
            (Stratification=="Age" & Adjustment=="None")) %>%
   mutate(trisk=round(trisk,0),logLik=round(logLik,3),
-         AIC=round(AIC,3),BIC=round(BIC,3)) %>%
+         AIC=round(AIC,3),BIC=round(BIC,3)) 
+# append prostate "both" analysis
+prostate_df <- fitCprd_df %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Both")
+fitCprd_df <- rbind(fitCprd_df,prostate_df) %>%
+  filter(Cancer!="Prostate" | Sex!="Male" | Stratification!="Age") %>%
   select(-Stratification,-Adjustment)
 
 # Survival curves
@@ -23,6 +28,12 @@ SurvCprd_df = read.csv("./data/CPRD_GOLD_survival_estimates.csv") %>%
            (Stratification=="Sex" & Adjustment=="None") |
            (Stratification=="Age" & Adjustment=="None")) %>%
   mutate(Method=ifelse(Method=="Kaplan-Meier","Observed",Method)) 
+# append prostate "both" analysis
+prostate_df <- SurvCprd_df %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Both")
+SurvCprd_df <- rbind(SurvCprd_df,prostate_df) %>%
+  filter(Cancer!="Prostate" | Sex!="Male" | Stratification!="Age") %>%
+  select(-Stratification,-Adjustment)
   #%>%
   ### Taking the subset of observations specified in monthIntervals
   #rowwise() %>%
@@ -39,7 +50,13 @@ rateHazCprd_df = read.csv("./data/CPRD_GOLD_hazard_overtime.csv") %>%
   filter((Stratification=="None" & Adjustment=="None") |
            (Stratification=="Sex" & Adjustment=="None") |
            (Stratification=="Age" & Adjustment=="None")) %>%
-  mutate(Method=ifelse(Method=="Kaplan-Meier","Observed",Method)) 
+  mutate(Method=ifelse(Method=="Kaplan-Meier","Observed",Method))
+# append prostate "both" analysis
+prostate_df <- rateHazCprd_df %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Both")
+rateHazCprd_df <- rbind(rateHazCprd_df,prostate_df) %>%
+  filter(Cancer!="Prostate" | Sex!="Male" | Stratification!="Age") %>%
+  select(-Stratification,-Adjustment)
 #%>%
   ### Taking the subset of observations specified in monthIntervals
   #rowwise() %>%
@@ -57,14 +74,25 @@ survAvgCprd_df = read.csv("./data/CPRD_GOLD_median_mean_survprob_survival.csv") 
            (Stratification=="Sex" & Adjustment=="None") |
            (Stratification=="Age" & Adjustment=="None")) &
            Method=="Kaplan-Meier") %>%
-  mutate(meanSurv=round(`rmean`,3),medianSurv=round(median,3)) %>%
+  mutate(meanSurv=round(`rmean`,3),medianSurv=round(median,3)) 
+# append prostate "both" analysis
+prostate_df <- survAvgCprd_df %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Both")
+survAvgCprd_df <- rbind(survAvgCprd_df,prostate_df) %>%
+  filter(Cancer!="Prostate" | Sex!="Male" | Stratification!="Age") %>%
   select(Cancer,Age,Sex,meanSurv,medianSurv,Database)
 
 # Number at risk summary table
 riskTableCprd_df = read.csv("./data/CPRD_GOLD_risk_table.csv") %>%
   filter((Stratification=="None" & Adjustment=="None") |
            (Stratification=="Sex" & Adjustment=="None") |
-           (Stratification=="Age" & Adjustment=="None")) %>%
+           (Stratification=="Age" & Adjustment=="None")) 
+
+# append prostate "both" analysis
+prostate_df <- riskTableCprd_df %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Both")
+riskTableCprd_df <- rbind(riskTableCprd_df,prostate_df) %>%
+  filter(Cancer!="Prostate" | Sex!="Male" | Stratification!="Age") %>%
   select(-Method,-Stratification,-Adjustment)
 colnames(riskTableCprd_df)[2:23] <- c(0,0.5,seq(1,20,1))
 

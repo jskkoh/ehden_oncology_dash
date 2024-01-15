@@ -67,3 +67,16 @@ tableSurvAvg = survAvgTable(
 
 meanSurv =  pull(tableSurvAvg %>% select(meanSurv))
 medianSurv =  pull(tableSurvAvg %>% select(medianSurv))
+
+
+test <- analysesRunList %>%
+  filter(Cancer==input$cancerType &
+           Age==input$age &
+           Sex==input$sex &
+           Method=="Kaplan-Meier")
+pull(analysesRunList %>%
+       filter(Cancer==input$cancerType &
+                Age==input$age &
+                Sex==input$sex) %>%
+       select(Run)
+)

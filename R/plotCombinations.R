@@ -4,8 +4,21 @@ library(tidyverse)
 analysesRunList = read.csv("./data/CPRD_GOLD_analyses_run_summary.csv") %>%
   filter(Adjustment=="None") %>%
   select(-Adjustment) %>%
-  mutate(Cancer=replace(Cancer,Cancer=="Head and Neck", "Head_and_neck"))
+  mutate(Cancer=replace(Cancer,Cancer=="Head and Neck", "Head_and_neck")) 
 
+prostate_df0 <- analysesRunList %>% filter(Cancer!="Prostate")
+# recode prostate, males
+prostate_df1 <- analysesRunList %>% filter(Cancer=="Prostate") %>%
+  mutate(Run = replace(Run, Stratification=="Age", "No"))
+# add prostate, females
+prostate_df2 <- analysesRunList %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Female", Run="No")
+# add prostate, both
+prostate_df3 <- analysesRunList %>% filter(Cancer=="Prostate") %>%
+  mutate(Sex="Both", Run="Yes")
+
+analysesRunList <- rbind(prostate_df0,prostate_df1,prostate_df2,prostate_df3)
+rm(prostate_df0,prostate_df1,prostate_df2,prostate_df3)
 
 
 # Old code
