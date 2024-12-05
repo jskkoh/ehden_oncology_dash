@@ -6,34 +6,35 @@ library(bslib)
 library(bsicons)
 library(shinyjs)
 library(shinyWidgets)
+library(shinydashboard)
+library(shinycssloaders)
 library(highcharter)
 library(waiter)
 library(tidyverse)
 library(DT)
 library(readxl)
 
-
-# extrap_param = readRDS("./data/extrapolation_parameters_CPRD_Aurum.rds")
-
 # Load data ---------------------------------------------------------------
 
 # Goodness of fit statistics
-gof_df_all = read.csv("./data/fitCprd.csv") 
+gof_df_all = read.csv("./data/fitAll.csv") 
 # K-M survival curves
-surv_df_all = read.csv("./data/survCprd.csv") 
+surv_df_all = read.csv("./data/survAll.csv") 
 # Hazard rate over time
-rateHaz_df_all = read.csv("./data/rateHazCprd.csv")
+rateHaz_df_all = read.csv("./data/rateHazAll.csv")
 # Mean/median survival estimates
-survAvg_df_all = read.csv("./data/survAvgCprd.csv") 
+survAvg_df_all = read.csv("./data/survAvgAll.csv") 
 # Number at risk summary table
-riskTable_df_all = read.csv("./data/riskTableCprd.csv") 
+riskTable_df_all = read.csv("./data/riskTableAll.csv") 
+# Available analyses summary table
+analysesRun_df_all = read.csv("./data/analysesRunAll.csv")
+# Demographics table
+table1_df_all = read_xlsx("./data/table1All.xlsx")
 
 # Load analysis functions
 source("./R/cancerDashFunctions.R")
-source("./R/plotCombinations.R")
 
-# Load loading page and help box code
-source("./R/textBoxes.R")
+# Load theme colours and waiter text
 source("./R/introPage.R")
 
 # Rename highchart download button
@@ -44,98 +45,91 @@ options(highcharter.lang = lang)
 
 # UI ----------------------------------------------------------------------
 
-ui <- fillPage(
+ui <- dashboardPage(
   
-  # Use bootstrap 5
-  suppressDependencies("bootstrap"),
-  tags$script(src="www/utils.js"),
-  tags$script(  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM",
-                crossorigin="anonymous"
-  ),
-  tags$title("EHDEN Cancer Survival Dashboard"),
-  tags$link(
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
-    rel="stylesheet",
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC",
-    crossorigin="anonymous"
-  ),
-  # Enable shinyjs
-  useShinyjs(),
-  # Load javascript file
-  includeScript("./www/cancerDash.js"),
-  # Load CSS file
-  includeCSS("style.css"),
-  # Show loading screen
-  use_waiter(),
-  waiter_show_on_load(color = "", html = landingDiv()),
   
-  div(
-    class="main d-flex flex-row", 
-    style="min-height: 100%;",
-    
-    # Input panel -------------------------------------------------------------
-    div(
-      class="d-flex flex-column border flex-grow-1 px-3",
-      style="min-width: 250px; max-width: 300px; flex-basis: 100px; background-color:#00436C",
-      
-      # Title
-      HTML('
-          <img  class ="image" src="ehden_logo.png">
-          '), 
-      div(
-        class = "h3 mb-2 mt-3 text-left",
-        "Cancer Survival Dashboard"
+  # Dashboard header --------------------------------------------------------
+  
+  dashboardHeader(
+    tags$li(class = "dropdown main-header logo"
+    ),
+    title = div(
+      tags$img(src="ehden_logo.png",width="250px"),
+      "Cancer survival dashboard",
+    ),
+    titleWidth = "600px"
+  ),
+  
+  
+  # Sidebar -----------------------------------------------------------------
+  
+  dashboardSidebar(
+    width = "300px",
+    sidebarMenu(
+      tags$li(class = "left-side, main-sidebar"
       ),
+      id = "tabs",
       
-      # Action buttons
-      div(
-        class="d-flex  flex-row justify-content-center flex-wrap w-100 pt-3 border-top border-bottom",
-        actionButton("info", "About",icon = icon("info-circle"), 
-                     class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#infoModal"),
-        actionButton("sources", "Data sources", icon = icon("book"), 
-                     class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
-        
-      ),
       
-      # Inputs
-      div(
-        class = "d-flex flex-column justify-content-center input-bar",
-        
-        # Dataset
+      menuItem(
+        tabName="moreInfo",
+        "Info",
+        startExpanded=F,
         div(
-          class = "control-label text-left mb-2 mt-2 fw-bold",
-          "Dataset"
-        ),
-        selectInput("dataset",NULL,selected="CPRD (UK)",
-                    choices = list("CPRD (UK)" = "CPRD_GOLD")),
-        
-        # Cancer type
-        div(
-          class = "control-label text-left mb-2 mt-2 fw-bold",
-          "Cancer type"
-        ),
-        selectizeInput(
-          inputId = "cancerType", 
-          label = NULL, 
-          selected = "Breast",
-          choices = list(
-            "Breast cancer" = "Breast",
-            "Colorectal cancer" = "Colorectal",
-            "Head and neck cancer" = "Head_and_neck",
-            "Liver cancer" = "Liver",
-            "Lung cancer" = "Lung",
-            "Pancreatic cancer" = "Pancreatic",
-            "Prostate cancer" = "Prostate",
-            "Stomach cancer" = "Stomach"
+          actionButton("showAbout", "About the dashboard", icon = icon("info-circle"),
           )
         ),
         
-        # Age / sex
         div(
-          class = "control-label text-left mb-2 mt-2 fw-bold",
-          "Stratification"
-          ),
+          actionButton("ehden", "EHDEN network", icon = icon("paper-plane")
+          )
+        ),
+        div(
+          actionButton("showDatasets", "Data sources", icon = icon("book")
+          )
+        )
+      ),
+      
+      menuItem(
+        tabName="Data",
+        "Data",
+        startExpanded=T,
+        selectInput("dataset","Dataset",selected="CPRD (UK)",
+                    choices = list("CPRD (UK)" = "CPRD_GOLD",
+                                   "CRN (Norway)" = "CRN",
+                                   "GCR (Geneva)" = "GCR",
+                                   "HUS (Helsinki)" = "HUS",
+                                   "HUVM (Andalusia)" = "HUVM",
+                                   "IMASIS (Barcelona)" = "IMASIS",
+                                   "IPCI (Netherlands)" = "IPCI",
+                                   "NCR (Netherlands)" = "NCR",
+                                   "SIDIAP (Catalonia)" = "SIDIAP",
+                                   "ULSEDV" = "ULSEDV",
+                                   "ULSGE" = "ULSGE",
+                                   "ULSM (Matosinhos)" = "ULSM",
+                                   "ULSRA" = "ULSRA",
+                                   "UTARTU" = "UTARTU")),
+        div(class="mb-2",
+            selectizeInput(
+              "cancerType","Cancer",selected = "Breast",
+              choices = list(
+                "Breast" = "Breast",
+                "Colorectal" = "Colorectal",
+                "Head and neck" = "Head_and_neck",
+                "Liver" = "Liver",
+                "Lung" = "Lung",
+                "Pancreatic" = "Pancreatic",
+                "Prostate" = "Prostate",
+                "Stomach" = "Stomach"
+              )
+            )
+        )
+      ),
+      
+      menuItem(
+        tabName="strat",
+        "Stratification",
+        startExpanded=F,
         selectInput("stratify",NULL,selected="None",
                     choices = list("None",
                                    "Age",
@@ -174,131 +168,153 @@ ui <- fillPage(
             status = "primary",
             icon = icon("check")
           )
-        ),
-        
-        HTML('
-          <br>
-          '), 
-        actionButton("run", "Run analysis",icon = icon("circle-right"), 
-                     class = "btn-run my-2"),
-        div(
-          class="d-flex  flex-row justify-content-center flex-wrap w-100 pt-3 mt-2 mb-2 border-top border-bottom",
-          
-          actionButton("ehden", "EHDEN network", icon = icon("paper-plane"), 
-                       class = "btn-info-2 my-2")
-        ),
+        )
+      ),
+      
+      menuItem(
+        tabName="plotTime",
+        "Time range",
+        startExpanded=F,
+        sliderInput("survTimeRange","Survival plot",min=0, 
+                    max=ceiling(max(surv_df_all$time)),value=c(0, ceiling(max(surv_df_all$time))),step=1),
+        sliderInput("hazTimeRange","Hazard plot",min=0, 
+                    max=ceiling(max(surv_df_all$time)),value=c(0, ceiling(max(surv_df_all$time))),step=1)
       )
+      
     ),
     
-    
-    # Results panel -----------------------------------------------------------
-    
+    HTML('
+          <br>
+          '), 
     div(
-      class="d-flex flex-row flex-grow-1 flex-wrap align-items-start align-content-start  justify-content-center p-3",
-      style="flex-basis: 300px; margin-top: 50px; background-color:#228096",
+      class = " my-2",
       
-      
-      # Survival curve extrapolation card
-      div(
-        class="res-card w-50",
-        div(
-          class = "res shadow border rounded-3 bg-white p-3 w-100",
-          div(
-            class = "fs-4 mb-3 mt-2 ms-2",
-            textOutput("survPlotTitle")
-          ),
-          div(
-            class = "control-label text-left mt-2 mb-2 mt-2 fw-bold",
-            "Select time range"
-          ),
-          div(
-            class = "control-label text-left mb-2 mt-2 fw-bold",
-            sliderInput("survTimeRange",NULL,min=0, 
-                        max=ceiling(max(surv_df_all$time)),value=c(0, ceiling(max(surv_df_all$time))),step=1)
-          ),
-          highchartOutput("survivalPlot")
-        )
-      ),
-      
-      
-      # Hazard plot card
-      div(
-        class="res-card w-50",
-        div(
-          class = "res shadow border rounded-3 bg-white p-3 w-100",
-          div(
-            class = "fs-4 mb-3 mt-2 ms-2",
-            textOutput("hazPlotTitle")
-          ),
-          div(
-            class = "control-label text-left mt-2 mb-2 mt-2 fw-bold",
-            "Select time range"
-          ),
-          div(
-            class = "control-label text-left mb-2 mt-2 fw-bold",
-            sliderInput("hazTimeRange",NULL,min=0, 
-                        max=ceiling(max(surv_df_all$time)),value=c(0, ceiling(max(surv_df_all$time))),step=1)
-          ),
-          highchartOutput("hazardPlot")
-        )
-      ),
-      
-      # No. at risk table card
-      div(
-        class="res-card-risk w-50",
-        div(
-          class = "res shadow border rounded-3 bg-white p-3",
-          div(
-            class = "fs-4 mb-3 mt-2 ms-2",
-            "Number at risk by time"
-          ),
-          
-          div(
-            class = "res-line justify-content-center",
-            div(
-              style="font-size:80%",
-              DT::dataTableOutput("riskTable")
-            )
-          )
-        )
-      ),
-      
-      # Goodness of fit table card
-      div(
-        class="res-card-gof w-50",
-        div(
-          class = "res shadow border rounded-3 bg-white p-3",
-          div(
-            class = "fs-4 mb-3 mt-2 ms-2",
-            "Extrapolation goodness-of-fit statistics"
-          ),
-          
-          div(
-            class = "res-line justify-content-center",
-            div(
-              style="font-size:80%",
-              DT::dataTableOutput("fitTable")
-            )
-          )
-        )
+      actionButton("run", 
+                   span("Run Analysis",
+                        style = "font-size: 20px; font-variant: small-caps"),
+                   icon = icon("circle-right")
       )
       
-    )
+    ),
+    
+    HTML('
+          <br><br>
+          ')
+    
   ),
   
+  # Dashboard body ----------------------------------------------------------
   
-  
-  modalDivs()
+  dashboardBody(
+    
+    # Show loading screen
+    use_waiter(),
+    waiter_show_on_load(color = "", html = landingDiv()),
+    
+    useShinyjs(),
+    
+    
+    # Load javascript file
+    includeScript("./www/cancerDash.js"),
+   
+    
+    # Load CSS file
+    includeCSS("style.css"),
+    
+    box(
+      title = textOutput("survPlotTitle"), 
+      width=12, status="primary", collapsible=T,
+      
+      conditionalPanel(
+        "input.run===0",
+        id="click-prompt",
+        span("Click 'Run analysis' to begin",
+             style = "font-size: 20px; color: #00436C; font-weight: bold")
+      )
+      ,
+      shinycssloaders::withSpinner(
+        type = 2,
+        color.background = "white",
+        color = "#00436C",
+        highchartOutput("survivalPlot",height="500px"),
+      )
+    ),
+    box(
+      title = textOutput("hazPlotTitle"), 
+      width = 12, status ="primary", 
+      collapsible=T,collapsed=T
+      ,
+      shinycssloaders::withSpinner(
+        type = 2,
+        color.background = "white",
+        color = "#00436C",
+        highchartOutput("hazardPlot",height="500px"),
+      )
+      ),
+    
+    fluidRow(
+      column(width = 4,
+             box(
+               title="At risk", width=NULL, status ="primary", 
+               collapsible=T, collapsed=T,
+               div(
+                 class = "res-line justify-content-center",
+                 div(
+                   style="font-size:100%; font-color:#00436C"
+                   ,
+                   DT::dataTableOutput("riskTable")
+                 )
+               )
+             )
+      ),
+      
+      column(width = 8,
+             box(
+               title="Goodness of fit", width=NULL, status="primary", 
+               collapsible=T, collapsed=T,
+               div(
+                 class = "res-line justify-content-center",
+                 div(
+                   style="font-size:100%"
+                   ,
+                   DT::dataTableOutput("fitTable")
+                 )
+               )
+             ),
+             box(
+               title = "Sample characteristics", 
+               width=NULL, status="primary", collapsible=T,collapsed=T,
+               div(
+                 class = "res-line justify-content-center",
+                 div(
+                   style="font-size:100%"
+                   ,
+                   DT::dataTableOutput("descriptiveTable")
+                 )
+               )
+             )
+      ),
+    )
+  ),
+  title="EHDEN Cancer Survival Dashboard"
   
 )
 
-server = function(input, output, session){
 
-  
-  
-  
+# Server ------------------------------------------------------------------
+
+server = function(input, output, session){
   # Reactive data -----------------------------------------------------------
-    
+  
+  # Active info modals
+  observeEvent(input$showAbout,{
+    aboutUi()
+  })
+  
+  observeEvent(input$showDatasets,{
+    datasetsUi()
+  })
+  
   # Reset age/sex selections when other stratification is selected
   observeEvent(input$stratify, {
     reset("age")
@@ -307,33 +323,34 @@ server = function(input, output, session){
   
   # Reactive value to check whether stratification is available
   stratifyCheck <- reactive({
-    pull(analysesRunList %>%
+    pull(analysesRun_df_all %>%
            filter(Cancer==input$cancerType &
                     Age==input$age &
                     Sex==input$sex &
+                    Database==input$dataset &
                     Method=="Kaplan-Meier") %>%
            select(Run)
-           )
+    )
   })
- 
+  
   # Enable/disable action button based on stratification availability
   observe({
     toggleState(id="run", condition=stratifyCheck()=="Yes")
   })
- 
-    # Use functions from 'cancerDashFunctions.R' to filter all data based on 
-    # Age/Sex/Cancer/Dataset inputs
-    tableSurvPlot <- eventReactive(input$run,{ 
-      survPlotTable(
+  
+  # Use functions from 'cancerDashFunctions.R' to filter all data based on 
+  # Age/Sex/Cancer/Dataset inputs
+  tableSurvPlot <- eventReactive(input$run,{ 
+    survPlotTable(
       surv_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
-    })
-    
-    tableSurvPlotKM <- eventReactive(input$run,{ 
+  })
+  
+  tableSurvPlotKM <- eventReactive(input$run,{ 
     survPlotTableKM(
       surv_df_all,
       input$cancerType,
@@ -341,75 +358,84 @@ server = function(input, output, session){
       input$sex,
       input$dataset
     )
-    })
-    
-    tableHazPlot <- eventReactive(input$run,{ 
-      hazPlotTable(
+  })
+  
+  tableHazPlot <- eventReactive(input$run,{ 
+    hazPlotTable(
       rateHaz_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
-    })
-    
-    tableHazObsPlot <- eventReactive(input$run,{ 
-      hazPlotTableObs(
+  })
+  
+  tableHazObsPlot <- eventReactive(input$run,{ 
+    hazPlotTableObs(
       rateHaz_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
-    })
-    
-    tableGOF <- eventReactive(input$run,{ 
-      gofTable(
+  })
+  
+  tableGOF <- eventReactive(input$run,{ 
+    gofTable(
       gof_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
-    })
-    
-    tableRisk <- eventReactive(input$run,{ 
-      riskTable(
+  })
+  
+  tableRisk <- eventReactive(input$run,{ 
+    riskTable(
       riskTable_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
-    })
-    
-    tableSurvAvg <- eventReactive(input$run,{ 
-      survAvgTable(
+  })
+  
+  tableSurvAvg <- eventReactive(input$run,{ 
+    survAvgTable(
       survAvg_df_all,
       input$cancerType,
       input$age,
       input$sex,
       input$dataset
     )
-    })
-    
-    meanSurv<- eventReactive(input$run,{ 
-      pull(tableSurvAvg() %>% 
-             select(meanSurv))
-    })
-    medianSurv <- eventReactive(input$run,{ 
-      pull(tableSurvAvg() %>% 
-             select(medianSurv))
-    })
-    
-    meanSurvText <- eventReactive(input$run,{ 
-      if(is.na(medianSurv())) {
+  })
+  
+  tableDescriptiveStats <- eventReactive(input$run,{ 
+    descriptiveStatsTable(
+      table1_df_all,
+      input$cancerType,
+      input$dataset
+    ) %>%
+      select(-Cancer,-Database)
+  })
+  
+  meanSurv<- eventReactive(input$run,{ 
+    pull(tableSurvAvg() %>% 
+           select(meanSurv))
+  })
+  medianSurv <- eventReactive(input$run,{ 
+    pull(tableSurvAvg() %>% 
+           select(medianSurv))
+  })
+  
+  meanSurvText <- eventReactive(input$run,{ 
+    if(is.na(medianSurv())) {
       paste0("Mean survival: <b>",meanSurv()," years</b><br>")
     } else {
       paste0("Mean survival: <b>",meanSurv()," years</b><br>",
              "Median survival: <b>",medianSurv()," years</b>")
     } 
-    })
+  })
   
   cancerName <- eventReactive(input$run, { 
     if(input$cancerType=="Breast") {"breast cancer"}
@@ -444,17 +470,34 @@ server = function(input, output, session){
     
     datatable(tableRisk(),
               rownames = FALSE,
-              options = list(paging=FALSE,searching=FALSE,info=FALSE))
+              options = list(paging=FALSE,searching=FALSE,info=FALSE,
+                             initComplete = JS(
+                               "function(settings, json) {",
+                               "$(this.api().table().header()).css({'color': '#00436C'});",
+                               "}")))
   })
   
   output$fitTable = DT::renderDataTable({
     
     datatable(tableGOF(),
               rownames = FALSE,
-              options = list(paging=FALSE,searching=FALSE,info=FALSE))
+              options = list(paging=FALSE,searching=FALSE,info=FALSE,
+                             initComplete = JS(
+                               "function(settings, json) {",
+                               "$(this.api().table().header()).css({'color': '#00436C'});",
+                               "}")))
   })
   
-  
+  output$descriptiveTable = DT::renderDataTable({
+    
+    datatable(tableDescriptiveStats(),
+              rownames = FALSE,
+              options = list(paging=FALSE,searching=FALSE,info=FALSE,
+                             initComplete = JS(
+                               "function(settings, json) {",
+                               "$(this.api().table().header()).css({'color': '#00436C'});",
+                               "}")))
+  })
   
   
   # Highcharter plots -------------------------------------------------------
@@ -470,7 +513,7 @@ server = function(input, output, session){
   colorSet = c("#88CCEE","#CC6677","#DDCC77","#117733","#332288","#AA4499",
                "#44AA99","#999933","#882255","#661100")
   # Survival curve extrapolation plot
-  highchartSurv <- reactive({
+  highchartSurv <- eventReactive(input$run,{
     hchart(tableSurvPlot(),"line",
            hcaes(
              x = time,
@@ -542,7 +585,7 @@ server = function(input, output, session){
       hc_add_theme(hc_theme(
         chart = list(
           style = list(
-            fontFamily = "Arial"
+            fontFamily = "Inter"
           )
         )
       )
@@ -551,7 +594,7 @@ server = function(input, output, session){
   
   
   # Hazard function plot
-  highchartHaz <- reactive({
+  highchartHaz <- eventReactive(input$run,{
     hchart(tableHazPlot(),"line",
            hcaes(
              x = time,
@@ -621,14 +664,13 @@ server = function(input, output, session){
       hc_add_theme(hc_theme(
         chart = list(
           style = list(
-            fontFamily = "Arial"
+            fontFamily = "Inter"
           )
         )
       )
       )
     
   })
-  
 }
 
 shinyApp(ui, server)
